@@ -1,5 +1,4 @@
 import java.lang.Exception
-import java.util.function.Predicate
 
 fun main() {
 
@@ -9,30 +8,30 @@ class NotSuchElementException(message: String) : Exception(message) {
 
 }
 
-fun <T> MutableList<T>.find(predicate: Predicate<T>): T? {
+fun <T> MutableList<T>.find(predicate: (T) -> Boolean): T? {
     for (element in this) {
-        if (predicate.test(element))
+        if (predicate(element))
             return element
     }
     return null
 }
 
-fun <T> MutableList<T>.first(predicate: Predicate<T>): T? {
+fun <T> MutableList<T>.first(predicate: (T) -> Boolean): T {
     for (element in this) {
-        if (predicate.test(element))
+        if (predicate(element))
             return element
     }
     throw NotSuchElementException("Predicate not match any element")
 }
 
-fun <T> MutableList<T>.foreEach(logic: (T) -> Boolean) {
+fun <T> MutableList<T>.foreEach(logic: (T) -> Unit) {
     for (element in this)
         logic(element)
 }
 
-fun <T> MutableList<T>.all(predicate: Predicate<T>): Boolean {
+fun <T> MutableList<T>.all(predicate: (T) -> Boolean): Boolean {
     for (element in this) {
-        if (!predicate.test(element))
+        if (!predicate(element))
             return false
     }
 
